@@ -6,10 +6,20 @@ const {
   updateContact,
   deleteContact,
 } = require("../controllers/contactController");
+const validateToken = require("../middleware/validateTokenHandler");
 
 const router = express.Router();
 
-router.route("/").get(getContacts).post(createContact);
-router.route("/:id").get(getContact).put(updateContact).delete(deleteContact);
+router.use(validateToken); // all routes below require auth
+
+router.route("/")
+  .get(getContacts)
+  .post(createContact);
+
+router
+  .route("/:id")
+  .get(getContact)
+  .put(updateContact)
+  .delete(deleteContact);
 
 module.exports = router;
